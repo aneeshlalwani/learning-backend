@@ -195,11 +195,33 @@ const changeCurrentPassword = asyncHanlder(async (req, res) => {
 const getCurrentUser = asyncHanlder(async (req, res) => {
   return res.json(200, req.user,"Current user fetched successfully")
 })
+
+const updateAccountDetails = asyncHanlder(async (req, res) => {
+  const { fullName, email } = req.body;
+
+  if (!fullName || !email) {
+    throw new ApiError(400, "Please provide both full name and email")
+  }
+  const user = await User.findByIdAndUpdate(req.user?._id, {
+    $set: {
+      fullName,
+      email
+    }
+  }, {
+    new: true
+  }
+  ).select("-password")
+
+  return res.status(200).json(
+    new ApiResponse(200, "Account details updated successfully")
+  )
+})
 export {
   registerUser,
   loginUser,
   logoutUser,
   refreshAccessToken,
   changeCurrentPassword,
-  getCurrentUser
+  getCurrentUser,
+  updateAccountDetails
 }
