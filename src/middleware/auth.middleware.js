@@ -13,7 +13,6 @@ export const verifyJWT = asynHanlder((req, _, next) => {
     const user = User.findById(decodedToken?._id).select("-password -refreshToken");
   
     if (!user) {
-      //  TODO: Discuss about frontend
       throw new ApiError(404, "User not found!");
     }
       req.user = user;

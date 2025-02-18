@@ -79,7 +79,7 @@ const loginUser = asyncHanlder(async (req, res) => {
   // get user credentials
   const { email, username, password } = req.body;
   // check for user credentials
-  if (!email || !username) {
+  if (!email && !username) { 
     throw new ApiError(400, "Email and Username are required!");
   }
   // check for user existence
